@@ -90,34 +90,33 @@ export function computeTextStyles (element, passProps) {
         });
     });
 
-    let fontFamily = undefined;
+    
     // afterten 폰트 관련 처리
-    if(!passProps.baseFontStyle) {
-        const fontWeight = finalStyle['fontWeight'];
-        fontFamily = 'NotoSansCJKkr';
-        switch (fontWeight) {
-            case '300':
-                fontFamily = `${fontFamily}-Light`;
-            break;
-            case 'normal':
-            case '400':
-                fontFamily = `${fontFamily}-Regular`;
-            break;
-            case '500':
-                fontFamily = `${fontFamily}-Medium`;
-            break;
-            case 'bold':
-            case '700':
-                fontFamily = `${fontFamily}-Bold`;
-            break;
-            default:
-                fontFamily = `${fontFamily}-Regular`;
-            break;
-        }
-        if (Platform.OS === 'android') {
-            finalStyle['fontWeight'] = 'normal';
-        }
+    const fontWeight = finalStyle['fontWeight'];
+    let fontFamily = 'NotoSansCJKkr';
+    switch (fontWeight) {
+        case '300':
+            fontFamily = `${fontFamily}-Light`;
+        break;
+        case 'normal':
+        case '400':
+            fontFamily = `${fontFamily}-Regular`;
+        break;
+        case '500':
+            fontFamily = `${fontFamily}-Medium`;
+        break;
+        case 'bold':
+        case '700':
+            fontFamily = `${fontFamily}-Bold`;
+        break;
+        default:
+            fontFamily = `${fontFamily}-Regular`;
+        break;
     }
+    if (Platform.OS === 'android') {
+        finalStyle['fontWeight'] = 'normal';
+    }
+    
     // Finally, try to add the baseFontStyle values to add pontentially missing
     // styles to each text node
     return {fontFamily, ...passProps.baseFontStyle, ...finalStyle };
