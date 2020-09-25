@@ -8,7 +8,7 @@ import {
   generateDefaultBlockStyles,
   generateDefaultTextStyles,
 } from "./HTMLDefaultStyles";
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 
 /**
  * Converts a html style string to an object
@@ -106,36 +106,37 @@ export function computeTextStyles(element, passProps) {
     });
   });
 
-    
   // afterten 폰트 관련 처리
-  const fontWeight = finalStyle['fontWeight'];
-  let fontFamily = 'NotoSansCJKkr';
-  switch (fontWeight) {
-      case '300':
-          fontFamily = `${fontFamily}-Light`;
-      break;
-      case 'normal':
-      case '400':
-          fontFamily = `${fontFamily}-Regular`;
-      break;
-      case '500':
-          fontFamily = `${fontFamily}-Medium`;
-      break;
-      case 'bold':
-      case '700':
-          fontFamily = `${fontFamily}-Bold`;
-      break;
+  const fontWeight = finalStyle["fontWeight"];
+  let fontFamily = undefined;
+  if (Platform.OS === "android") {
+    fontFamily = "NotoSansCJKkr";
+    switch (fontWeight) {
+      case "300":
+        fontFamily = `${fontFamily}-Light`;
+        break;
+      case "normal":
+      case "400":
+        fontFamily = `${fontFamily}-Regular`;
+        break;
+      case "500":
+        fontFamily = `${fontFamily}-Medium`;
+        break;
+      case "bold":
+      case "700":
+        fontFamily = `${fontFamily}-Bold`;
+        break;
       default:
-          fontFamily = `${fontFamily}-Regular`;
-      break;
+        fontFamily = `${fontFamily}-Regular`;
+        break;
+    }
+
+    finalStyle["fontWeight"] = "normal";
   }
-  if (Platform.OS === 'android') {
-      finalStyle['fontWeight'] = 'normal';
-  }
-  
+
   // Finally, try to add the baseFontStyle values to add pontentially missing
   // styles to each text node
-  return {fontFamily, ...passProps.baseFontStyle, ...finalStyle };
+  return { fontFamily, ...passProps.baseFontStyle, ...finalStyle };
 }
 
 function _recursivelyComputeParentTextStyles(element, passProps, styles = []) {
